@@ -9,8 +9,14 @@ import React from 'react';
 // it is used for dispatching/sending actions (or action objects)
 // to the Redux store reducer function to update state. It's like we are
 // using 'setState' from useState hook.
-import { useDispatch, useSelector } from 'react-redux';
 // import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  decrement,
+  increaseByAmount,
+  increment,
+  toggleCounter,
+} from '../store';
 import classes from './Counter.module.css';
 
 function Counter() {
@@ -26,19 +32,19 @@ function Counter() {
   const dispatch = useDispatch();
 
   const counterIncrementHandler = () => {
-    dispatch({ type: 'increment' });
+    dispatch(increment());
   };
 
   const counterDecrementHandler = () => {
-    dispatch({ type: 'decrement' });
+    dispatch(decrement());
   };
 
   const counterIncreaseByFiveHandler = () => {
-    dispatch({ type: 'increase_by_value', payload: 5 });
+    dispatch(increaseByAmount(5));
   };
 
   const toggleCounterHandler = () => {
-    dispatch({ type: 'toggle_counter' });
+    dispatch(toggleCounter());
   };
 
   return (
