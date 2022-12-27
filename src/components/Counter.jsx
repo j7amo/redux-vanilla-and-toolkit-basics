@@ -16,7 +16,7 @@ import {
   increaseByAmount,
   increment,
   toggleCounter,
-} from '../store';
+} from '../store/counterSlice';
 import classes from './Counter.module.css';
 
 function Counter() {
@@ -27,8 +27,8 @@ function Counter() {
   // 4) Context changed
   // And now there's ONE MORE REASON for re-evaluation:
   // 5) Redux store change which makes useSelector return a new value to the component
-  const counter = useSelector((state) => state.counter);
-  const isShown = useSelector((state) => state.isShown);
+  const counter = useSelector((state) => state.counter.counter);
+  const isShown = useSelector((state) => state.counter.isShown);
   const dispatch = useDispatch();
 
   const counterIncrementHandler = () => {

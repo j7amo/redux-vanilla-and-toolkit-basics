@@ -1,37 +1,7 @@
 /* eslint-disable no-param-reassign,no-plusplus */
-import { configureStore, createSlice } from '@reduxjs/toolkit';
-
-// Redux Toolkit approach
-// 1) create a state slice
-const counterSlice = createSlice({
-  // 1.1) it should have a name (will be used as a prefix for action dispatch)
-  name: 'counter',
-  // 1.2) initial state (used as a starting point)
-  initialState: {
-    counter: 0,
-    isShown: true,
-  },
-  // 1.3) reducers (used for state updating)
-  // by the way we can write the logic mutating way, although we are not really mutating it
-  // (this is ensured by Immer library which detects such operations,
-  // clones the state under the hood and applies changes immutably)
-  reducers: {
-    increment(state) {
-      state.counter++;
-    },
-    decrement(state) {
-      state.counter--;
-    },
-    increaseByAmount(state, action) {
-      state.counter += action.payload;
-    },
-    toggleCounter(state) {
-      state.isShown = !state.isShown;
-    },
-  },
-  // so we have configured our counterSlice, and it's pretty obvious that
-  // this is a much more concise way of writing Redux logic
-});
+import { configureStore } from '@reduxjs/toolkit';
+import counterReducer from './counterSlice';
+import authReducer from './authSlice';
 
 // 'configureStore' accepts an object with different options most of which are OPTIONAL
 // except 'reducer' option which is mandatory! It should point to:
@@ -41,16 +11,17 @@ const counterSlice = createSlice({
 // { counterReducer: counterSlice.reducer, nameReducer: nameSlice.reducer})
 const store = configureStore({
   // because we have only one slice we can point directly to it without any mapping object:
-  reducer: counterSlice.reducer,
+  // reducer: counterSlice.reducer,
+
+  // but now when we have multiple slices we should point to a mapping object
+  // with KEYS of our choice. We will access corresponding slices by these names (e.g.
+  // state.counter OR state.auth). This is merged into one big root reducer behind the scenes.
+  reducer: {
+    counter: counterReducer,
+    auth: authReducer,
+  },
 });
 
-// a slice object exposes 'actions' property which holds automatically generated
-// action creators (when we call them somewhere in the app they will return an
-// action object with type="slice_name/action_name" (e.g. "counter/increment"),
-// so we need to export these action creators:
-export const {
-  increment, decrement, increaseByAmount, toggleCounter,
-} = counterSlice.actions;
 export default store;
 
 // // vanilla Redux approach
